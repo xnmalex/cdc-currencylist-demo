@@ -70,6 +70,11 @@ dependencies {
     implementation(libs.insert.koin.koin.android)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlin.mockito.kotlin)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(kotlin("test"))
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
