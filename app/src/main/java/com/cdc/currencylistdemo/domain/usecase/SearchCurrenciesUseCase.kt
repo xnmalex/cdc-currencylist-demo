@@ -10,8 +10,13 @@ class SearchCurrenciesUseCase(
     private val repo: CurrencyLocalRepository
 ) {
     operator fun invoke(query: String, type:String): Flow<List<CurrencyInfo>> {
-        return repo.searchCurrency(query, type).map { entityList ->
-            entityList.map { it.toDomain() }
-        }
-    }
+        return repo
+            .getByType(type)
+            .map { entityList -> entityList.map { it.toDomain() }.filter {
+                        it.name.lowercase().contains(query) || it.id.lowercase()
+                            .contains(query) == true
+                    }
+                }
+            }
+
 }

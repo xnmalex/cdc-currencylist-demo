@@ -148,7 +148,7 @@ class CurrencyListFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestionFlow.collect { suggestions ->
                     suggestionAdapter.updateItems(suggestions)
-                    updateUiState(suggestions)
+                    updateUiState(suggestionAdapter.isEmpty)
                 }
             }
         }
@@ -163,11 +163,12 @@ class CurrencyListFragment : Fragment() {
         emptyView.visibility = if (isEmpty) View.VISIBLE else View.GONE
     }
 
-    private fun updateUiState(suggestions: List<CurrencyInfo>? = null){
+    private fun updateUiState(isEmpty: Boolean = false){
         if (isSearchActive) {
             recyclerView.visibility = View.GONE
             emptyView.visibility = View.GONE
-            searchEmptyView.visibility = if (suggestions.isNullOrEmpty()) View.VISIBLE else View.GONE
+
+            searchEmptyView.visibility = if (isEmpty) View.VISIBLE else View.GONE
         } else {
             updateEmptyViewVisibility(currencyList.isEmpty())
             searchEmptyView.visibility = View.GONE
