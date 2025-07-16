@@ -46,6 +46,4 @@ class CurrencyAdapter(
         notifyDataSetChanged()
     }
 
-    fun isEmpty(): Boolean = items.isEmpty()
-
 }

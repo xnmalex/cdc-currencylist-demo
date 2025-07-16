@@ -11,7 +11,7 @@ class DemoApplication : Application(){
 
         startKoin {
             androidContext(this@DemoApplication)
-            modules(appModule) // <-- your Koin module
+            modules(appModule)
         }
     }
 }

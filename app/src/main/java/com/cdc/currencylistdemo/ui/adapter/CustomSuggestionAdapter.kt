@@ -1,7 +1,6 @@
 package com.cdc.currencylistdemo.ui.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,7 @@ class CustomSuggestionAdapter(
     context: Context,
 ) : ArrayAdapter<CurrencyInfo>(context, 0, mutableListOf()) {
 
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        Log.d("cdc", "getView called for position: $position, item: ${getItem(position)}")
         val suggestion = getItem(position)
 
         val view = convertView ?: LayoutInflater.from(context).inflate(
