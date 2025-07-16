@@ -43,6 +43,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp14"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/right_arrow"
+        app:layout_constraintTop_toTopOf="@id/tvName" />
+
+    <ImageView
+        android:id="@+id/right_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/chevron_right"
+        android:src="@drawable/ic_chevron_right"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvName" />
 

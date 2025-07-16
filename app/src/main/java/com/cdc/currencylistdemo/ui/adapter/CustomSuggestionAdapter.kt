@@ -41,6 +41,9 @@ class CustomSuggestionAdapter(
         return super.getItem(position)
     }
 
+    override fun isEnabled(position: Int): Boolean {
+        return false // disables click
+    }
 
     override fun getFilter(): Filter {
         return object : Filter() {
