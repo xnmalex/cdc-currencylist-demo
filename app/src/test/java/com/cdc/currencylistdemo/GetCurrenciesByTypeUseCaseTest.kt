@@ -2,7 +2,6 @@ package com.cdc.currencylistdemo
 
 import com.cdc.currencylistdemo.data.local.entity.CurrencyInfoEntity
 import com.cdc.currencylistdemo.data.local.repository.CurrencyLocalRepository
-import com.cdc.currencylistdemo.domain.model.CurrencyInfo
 import com.cdc.currencylistdemo.domain.model.toDomain
 import com.cdc.currencylistdemo.domain.usecase.GetCurrenciesByTypeUseCase
 import junit.framework.TestCase.assertEquals
