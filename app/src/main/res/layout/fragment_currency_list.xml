@@ -25,8 +25,16 @@
             android:id="@+id/emptyView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/no_result_text"
+            android:text="@string/no_data_text"
             android:textSize="@dimen/sp16"
+            android:gravity="center"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/searchEmptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/search_empty_view"
             android:gravity="center"
             android:visibility="gone" />
 

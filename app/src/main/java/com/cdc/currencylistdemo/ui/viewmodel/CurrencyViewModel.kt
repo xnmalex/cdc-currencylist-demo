@@ -107,16 +107,11 @@ class CurrencyViewModel (
 
     fun getAllPurchasableCurrencies() {
         viewModelScope.launch {
-            viewModelScope.launch {
-                try {
-                    getAllPurchasableCurrenciesUseCase()
-                        .collect { list ->
-                            currentList = list
-                            _currencyListFlow.emit(list)
-                        }
-                } catch (e: Exception) {
-                    _msgFlow.emit(e.message ?: "Unknown error")
-                }
+            getAllPurchasableCurrenciesUseCase().catch { e->
+                _msgFlow.emit(e.message ?: "Unknown error")
+            }.collect { list ->
+                currentList = list
+                _currencyListFlow.emit(list)
             }
         }
     }
@@ -124,12 +119,10 @@ class CurrencyViewModel (
     /** Search the current list */
     fun searchCurrencies(query: String, type: String) {
         viewModelScope.launch {
-            try {
-                searchCurrenciesUseCase(query, type).collect { list ->
-                    _suggestionFlow.value = list
-                }
-            } catch (e: Exception) {
+            searchCurrenciesUseCase(query, type).catch { e->
                 _msgFlow.emit(e.message ?: "Unknown error")
+            }.collect { list ->
+                _suggestionFlow.value = list
             }
         }
     }

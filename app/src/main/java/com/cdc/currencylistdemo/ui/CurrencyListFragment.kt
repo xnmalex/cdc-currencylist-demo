@@ -2,7 +2,6 @@ package com.cdc.currencylistdemo.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -51,8 +50,10 @@ class CurrencyListFragment : Fragment() {
     private lateinit var currencyType: String
     private lateinit var recyclerView: RecyclerView
     private lateinit var emptyView: View
+    private lateinit var searchEmptyView: View
     private lateinit var adapter: CurrencyAdapter
     private lateinit var suggestionAdapter: CustomSuggestionAdapter
+    private var isSearchActive = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +69,7 @@ class CurrencyListFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.currencyRecyclerView)
         emptyView = view.findViewById(R.id.emptyView)
+        searchEmptyView = view.findViewById(R.id.searchEmptyView)
 
         adapter = CurrencyAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -119,6 +121,17 @@ class CurrencyListFragment : Fragment() {
                         return true
                     }
                 })
+
+                searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+                    isSearchActive = hasFocus
+                    updateUiState()
+                }
+
+                searchView.setOnCloseListener {
+                    isSearchActive = false
+                    updateUiState()
+                    false
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -134,9 +147,8 @@ class CurrencyListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestionFlow.collect { suggestions ->
-                    Log.d("cdc", "New list: ${suggestions.toList()}")
                     suggestionAdapter.updateItems(suggestions)
-
+                    updateUiState(suggestions)
                 }
             }
         }
@@ -144,11 +156,21 @@ class CurrencyListFragment : Fragment() {
 
     private fun observeData() {
         adapter.submitList(currencyList)
-        updateEmptyViewVisibility(currencyList.isEmpty())
     }
 
     private fun updateEmptyViewVisibility(isEmpty: Boolean) {
         recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
         emptyView.visibility = if (isEmpty) View.VISIBLE else View.GONE
+    }
+
+    private fun updateUiState(suggestions: List<CurrencyInfo>? = null){
+        if (isSearchActive) {
+            recyclerView.visibility = View.GONE
+            emptyView.visibility = View.GONE
+            searchEmptyView.visibility = if (suggestions.isNullOrEmpty()) View.VISIBLE else View.GONE
+        } else {
+            updateEmptyViewVisibility(currencyList.isEmpty())
+            searchEmptyView.visibility = View.GONE
+        }
     }
 }
