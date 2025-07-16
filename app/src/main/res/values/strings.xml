@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">CurrencyListDemo</string>
+    <string name="clear_db_txt">Clear Local Database</string>
+    <string name="insert_db_txt">Insert Data Into Database</string>
+    <string name="crypto_list_text">Show Crypto List</string>
+    <string name="fiat_list_text">Show Fiat List</string>
+    <string name="can_purchased_list_text">Currency Can be Purchased</string>
+    <string name="search_text">Search</string>
+    <string name="no_result_text">No Results</string>
 </resources>

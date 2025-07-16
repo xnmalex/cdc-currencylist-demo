@@ -11,7 +11,9 @@ data class CurrencyInfo(
     val symbol: String,
     val code: String?,
     val type: String // "crypto" or "fiat"
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String = "$name ($id)"
+}
 
 fun CurrencyInfo.toEntity(type:String): CurrencyInfoEntity {
     return CurrencyInfoEntity(

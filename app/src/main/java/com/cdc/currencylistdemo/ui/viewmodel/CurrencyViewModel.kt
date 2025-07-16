@@ -8,14 +8,22 @@ import com.cdc.currencylistdemo.domain.usecase.GetAllPurchasableCurrenciesUseCas
 import com.cdc.currencylistdemo.domain.usecase.GetCurrenciesByTypeUseCase
 import com.cdc.currencylistdemo.domain.usecase.LoadCurrenciesFromAssetUseCase
 import com.cdc.currencylistdemo.domain.usecase.SearchCurrenciesUseCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class CurrencyViewModel (
     private val clearAllCurrenciesUseCase: ClearAllCurrenciesUseCase,
     private val loadCurrenciesFromAssetUseCase: LoadCurrenciesFromAssetUseCase,
@@ -37,6 +45,29 @@ class CurrencyViewModel (
     private val _suggestionFlow = MutableStateFlow<List<CurrencyInfo>>(emptyList())
     val suggestionFlow = _suggestionFlow.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    private val _searchType = MutableStateFlow("crypto")
+
+    init {
+        viewModelScope.launch {
+            combine(_searchQuery, _searchType) { query, type ->
+                query to type
+            }
+                .debounce(300)
+                .distinctUntilChanged()
+                .flatMapLatest { (query, type) ->
+                    searchCurrenciesUseCase(query, type)
+                        .catch { e ->
+                            _msgFlow.emit(e.message ?: "Unknown error")
+                            emit(emptyList())
+                        }
+                }
+                .collectLatest { results ->
+                    _suggestionFlow.value = results
+                }
+        }
+    }
+
     /** Preload data from asset JSON into Room database */
     fun loadCurrenciesFromAsset() {
         viewModelScope.launch {
@@ -57,19 +88,6 @@ class CurrencyViewModel (
             }.collect { list ->
                 currentList = list
                 _currencyListFlow.emit(list)
-            }
-        }
-    }
-
-    /** Search the current list */
-    fun searchCurrencies(query: String, type: String) {
-        viewModelScope.launch {
-            try {
-                searchCurrenciesUseCase(query, type).collect { list ->
-                    _suggestionFlow.value = list
-                }
-            } catch (e: Exception) {
-                _msgFlow.emit(e.message ?: "Unknown error")
             }
         }
     }
@@ -99,6 +117,19 @@ class CurrencyViewModel (
                 } catch (e: Exception) {
                     _msgFlow.emit(e.message ?: "Unknown error")
                 }
+            }
+        }
+    }
+
+    /** Search the current list */
+    fun searchCurrencies(query: String, type: String) {
+        viewModelScope.launch {
+            try {
+                searchCurrenciesUseCase(query, type).collect { list ->
+                    _suggestionFlow.value = list
+                }
+            } catch (e: Exception) {
+                _msgFlow.emit(e.message ?: "Unknown error")
             }
         }
     }
