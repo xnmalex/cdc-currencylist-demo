@@ -10,7 +10,7 @@ interface CurrencyLocalRepository {
 
     fun getByType(type: String): Flow<List<CurrencyInfoEntity>>
 
-    fun searchCrypto(query: String): Flow<List<CurrencyInfoEntity>>
+    fun searchCurrency(query: String, type: String): Flow<List<CurrencyInfoEntity>>
 
     suspend fun clearAll()
 }

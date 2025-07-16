@@ -13,7 +13,7 @@ class CurrencyLocalRepositoryImpl(private val currencyDao: CurrencyDao): Currenc
 
     override fun getByType(type: String): Flow<List<CurrencyInfoEntity>> = currencyDao.getByType(type)
 
-    override fun searchCrypto(query: String): Flow<List<CurrencyInfoEntity>> = currencyDao.searchCrypto(query)
+    override fun searchCurrency(query: String, type: String): Flow<List<CurrencyInfoEntity>> = currencyDao.searchCurrency(query, type)
 
     override suspend fun clearAll() {
         currencyDao.clearAll()

@@ -18,8 +18,12 @@ interface CurrencyDao {
     @Query("SELECT * FROM currency WHERE type = :type")
     fun getByType(type: String): Flow<List<CurrencyInfoEntity>>
 
-    @Query("SELECT * FROM currency WHERE type = 'crypto' AND name LIKE '%' || :query || '%'")
-    fun searchCrypto(query: String): Flow<List<CurrencyInfoEntity>>
+    @Query("""
+        SELECT * FROM currency 
+        WHERE type = :type 
+        AND (name LIKE '%' || :query || '%' OR symbol LIKE '%' || :query || '%')
+    """)
+    fun searchCurrency(query: String, type: String): Flow<List<CurrencyInfoEntity>>
 
     @Query("DELETE FROM currency")
     suspend fun clearAll()
