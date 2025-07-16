@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.cdc.currencylistdemo.CurrencyConstants
 import com.cdc.currencylistdemo.R
 import com.cdc.currencylistdemo.domain.model.CurrencyInfo
 import com.cdc.currencylistdemo.ui.viewmodel.CurrencyViewModel
@@ -19,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DemoActivity : AppCompatActivity() {
     private val viewModel : CurrencyViewModel by viewModel()
-    private var currencyType: String = "crypto"
+    private var currencyType: String = CurrencyConstants.TYPE_CRYPTO
     private var userRequestedCurrency = false
 
 
@@ -49,13 +50,13 @@ class DemoActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.crypto_list_btn).setOnClickListener {
-            currencyType = "crypto"
+            currencyType = CurrencyConstants.TYPE_CRYPTO
             userRequestedCurrency = true
             viewModel.loadCurrencyByType(currencyType)
         }
 
         findViewById<Button>(R.id.fiat_list_btn).setOnClickListener {
-            currencyType = "fiat"
+            currencyType = CurrencyConstants.TYPE_FIAT
             userRequestedCurrency = true
             viewModel.loadCurrencyByType(currencyType)
         }

@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.cdc.currencylistdemo.CurrencyConstants
 import com.cdc.currencylistdemo.databinding.ItemCurrencyBinding
 import com.cdc.currencylistdemo.domain.model.CurrencyInfo
 
@@ -20,7 +21,7 @@ class CurrencyAdapter(
             binding.tvName.text = item.name
             binding.tvSymbol.text = item.symbol
 
-            binding.tvSymbol.visibility = if(item.type == "crypto") View.VISIBLE else View.GONE
+            binding.tvSymbol.visibility = if(item.type == CurrencyConstants.TYPE_CRYPTO) View.VISIBLE else View.GONE
 
             binding.root.setOnClickListener {
                 onItemClick?.invoke(item)

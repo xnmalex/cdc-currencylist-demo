@@ -20,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.cdc.currencylistdemo.CurrencyConstants
 import com.cdc.currencylistdemo.R
 import com.cdc.currencylistdemo.domain.model.CurrencyInfo
 import com.cdc.currencylistdemo.ui.adapter.CurrencyAdapter
@@ -58,7 +59,7 @@ class CurrencyListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currencyList = arguments?.getParcelableArrayList<CurrencyInfo>(ARG_CURRENCY_LIST) ?: emptyList()
-        currencyType = arguments?.getString(ARG_CURRENCY_TYPE) ?: "crypto"
+        currencyType = arguments?.getString(ARG_CURRENCY_TYPE) ?: CurrencyConstants.TYPE_CRYPTO
     }
 
     override fun onCreateView(

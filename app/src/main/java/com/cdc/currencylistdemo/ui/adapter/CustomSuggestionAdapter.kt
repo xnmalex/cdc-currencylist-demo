@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import android.widget.TextView
+import com.cdc.currencylistdemo.CurrencyConstants
 import com.cdc.currencylistdemo.R
 import com.cdc.currencylistdemo.domain.model.CurrencyInfo
 
@@ -31,7 +32,7 @@ class CustomSuggestionAdapter(
         nameText.text = suggestion?.name ?: ""
         symbolText.text = suggestion?.symbol ?: ""
 
-        symbolText.visibility = if(suggestion?.type == "crypto") View.VISIBLE else  View.GONE
+        symbolText.visibility = if(suggestion?.type == CurrencyConstants.TYPE_CRYPTO) View.VISIBLE else  View.GONE
 
         return view
     }
