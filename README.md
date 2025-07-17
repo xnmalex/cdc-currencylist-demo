@@ -76,6 +76,8 @@ com.cdc.currencylistdemo
 └── adapter
 │       └── CurrencyAdapter.kt
 │       └── CustomSuggestionAdapter.kt
+├── DemoApplication.kt
+├── CurrencyConstants.kt
 ```
 
 ---
