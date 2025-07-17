@@ -62,6 +62,7 @@ class DemoActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.purchase_list_btn).setOnClickListener {
+            currencyType = ""
             userRequestedCurrency = true
             viewModel.getAllPurchasableCurrencies()
         }

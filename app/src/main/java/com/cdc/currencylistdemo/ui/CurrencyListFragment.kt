@@ -68,7 +68,7 @@ class CurrencyListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         currencyList = arguments?.getParcelableArrayList<CurrencyInfo>(ARG_CURRENCY_LIST) ?: emptyList()
-        currencyType = arguments?.getString(ARG_CURRENCY_TYPE) ?: CurrencyConstants.TYPE_CRYPTO
+        currencyType = arguments?.getString(ARG_CURRENCY_TYPE) ?: ""
     }
 
     override fun onCreateView(
