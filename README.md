@@ -1,6 +1,6 @@
 # 💸 CDC Currency List Demo
 
-This is a simple Android demo app built with Kotlin and Jetpack components. It demonstrates how to work with local JSON assets, Room database, and a search interface with debounce using `SearchView`.
+This is a simple Android demo app built with Kotlin and Jetpack components. It demonstrates how to work with local JSON assets, Room database, and a search interface using `SearchView`.
 
 ---
 
@@ -10,7 +10,7 @@ This is a simple Android demo app built with Kotlin and Jetpack components. It d
 - Clear the entire database
 - View lists of **Crypto**, **Fiat**, or **All** currencies
 - View currencies in a dedicated fragment with optional search
-- Search suggestions with live updates and debounce
+- Search suggestions with live updates
 - Clean Architecture with UseCases and Repository pattern
 
 ---
