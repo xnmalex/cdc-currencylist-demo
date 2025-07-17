@@ -26,6 +26,15 @@ import com.cdc.currencylistdemo.domain.model.CurrencyInfo
 import com.cdc.currencylistdemo.ui.adapter.CurrencyAdapter
 import com.cdc.currencylistdemo.ui.adapter.CustomSuggestionAdapter
 import com.cdc.currencylistdemo.ui.viewmodel.CurrencyViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -81,6 +90,7 @@ class CurrencyListFragment : Fragment() {
         return view
     }
 
+    @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -109,19 +119,16 @@ class CurrencyListFragment : Fragment() {
                 autoCompleteTextView.dropDownWidth = ViewGroup.LayoutParams.MATCH_PARENT
 
                 searchView.queryHint = "Search currencies..."
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        query?.let {
-                            viewModel.searchCurrencies(it, currencyType)
-                        }
-                        return true
-                    }
 
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        viewModel.searchCurrencies(newText ?: "", currencyType)
-                        return true
-                    }
-                })
+                viewLifecycleOwner.lifecycleScope.launch {
+                    searchView.queryTextChanges()
+                        .debounce(300)
+                        .distinctUntilChanged()
+                        .flowOn(Dispatchers.Default)
+                        .collectLatest { query ->
+                            viewModel.searchCurrencies(query, currencyType)
+                        }
+                }
 
                 searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
                     isSearchActive = hasFocus
@@ -175,4 +182,17 @@ class CurrencyListFragment : Fragment() {
             searchEmptyView.visibility = View.GONE
         }
     }
+}
+
+fun SearchView.queryTextChanges(): Flow<String> = callbackFlow {
+    val listener = object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?) = false
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            trySend(newText.orEmpty())
+            return true
+        }
+    }
+    setOnQueryTextListener(listener)
+    awaitClose { setOnQueryTextListener(null) }
 }
