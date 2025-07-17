@@ -64,12 +64,16 @@ com.cdc.currencylistdemo
 │ └── model
 │       └── CurrencyViewModel.kt
 │ └── usecase
+│       └── ClearAllCurrenciesUseCase.kt
+│       └── LoadCurrenciesFromAssetUseCase.kt
 ├── di
 │ └── AppModule.kt
 ├── ui
 │ ├── DemoActivity.kt
 │ └── CurrencyListFragment.kt
-│ └── adapter
+└── viewmodel
+│       └── CurrencyViewModel.kt
+└── adapter
 │       └── CurrencyAdapter.kt
 │       └── CustomSuggestionAdapter.kt
 ```
@@ -106,7 +110,7 @@ com.cdc.currencylistdemo
 
 | DemoActivity | Clear Database | Empty Screen | Crypto List
 |----------------|-------------|--------------|--------------
-| ![Demo1](./screenshots/DemoActitivy_1.png) | ![Demo2](./screenshots/DemoActitivy_2.png)  | ![Demo3](./screenshots/DemoActitivy_3.png) | ![Demo4](./screenshots/DemoActitivy_5.png)
+| ![Demo1](./screenshots/DemoActitivy_1.png) | ![Demo2](./screenshots/DemoActitivy_2.png)  | ![Demo3](./screenshots/DemoActitivy_3.png) | ![Demo4](./screenshots/DemoActitivy_4.png)
 
 
 | Search Suggestion | Search No Result  | Fiat List
